@@ -13,11 +13,6 @@ set -o errexit    # always exit on error
             continue
         fi
        
-        ${buildpack_path}/bin/release $BUILD_DIR &>/dev/null
-        res=$?
-
-        if [ $res -ne 0 ] ; then
-            exit $res
-        fi      
+        ${buildpack_path}/bin/release $BUILD_DIR &>/dev/null   
     done
 ) || exit 1
