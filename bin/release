@@ -2,8 +2,8 @@
 # bin/release <build-dir>
 (
     cd $BUILD_DIR &>/dev/null
-    cat $BUILD_DIR/.heroku-private-build.lst|while read repo_url ; do
-        continue
+    buildpacks=$(cat $BUILD_DIR/.heroku-private-build.lst)
+    #cat $BUILD_DIR/.heroku-private-build.lst|while read repo_url ; do
         # buildpack_code=$(echo ${repo_url}|md5sum|tr -d ' -')
         # buildpack_name="__buildpack_${buildpack_code}"
         # buildpack_path="${BUILD_DIR}/${buildpack_name}"
@@ -13,7 +13,7 @@
     #     fi
        
     #     ${buildpack_path}/bin/release $BUILD_DIR &>/dev/null   
-    done
+    #done
 )
 cat << EOF
 ---
