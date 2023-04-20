@@ -16,32 +16,27 @@ ENV_DIR=${3:-}
 echo build user is `whoami`
 ls -lrta ~
 
-# first we need to set up ssh
 sh scripts/add-sshkey.sh $ENV_DIR
 
-echo "ENV_DIR"
-echo  $ENV_DIR
-ls $ENV_DIR
+(
+    cd $BUILD_DIR
 
-# first move files in build directory to data directory
-cd $BUILD_DIR
-CURFILES=$(ls .)
-echo moving "${CURFILES} to $BUILD_DIR/data"
-mkdir data
-mv $CURFILES data
+    cat $BUILD_DIR/.heroku-private-build.lst|while read repo_url ; do
+        buildpack_code=echo ${repo_url}|md5sum|tr -d ' -'
+        buildpack_name=__buildpack_${buildpack_code}
+        buildpack_path=${BUILD_DIR}/$buildpack_name
 
-# read repo to pull into app directory
-REPO=$(cat $BUILD_DIR/.heroku-private-build.lst)
-echo Pulling $REPO
-git clone $REPO $BUILD_DIR/app
-ls -lrt $BUILD_DIR/app
+        echo Pulling $repo_url
+        git clone $repo_url ${buildpack_name}
 
-#call the apps  compile script of the downloaded repository.
-if [ -f $1/app/bin/compile ]; then
-    echo "Calling app compile script $BUILD_DIR/app/bin/compile"
-    $BUILD_DIR/app/bin/compile  "$BUILD_DIR" "$CACHE_DIR" "$ENV_DIR"
-    exit $?
-else
-    echo "No compile file in app"
-    exit 1
-fi
+        if [ -f ${buildpack_path}/bin/compile ]; then
+            echo "Calling buildpack compile script"
+            ${buildpack_path}/bin/compile  "$BUILD_DIR" "$CACHE_DIR" "$ENV_DIR"
+            exit $?
+        else
+            echo "No compile file in app"
+            exit 1
+        fi
+    done
+)
+
