@@ -3,6 +3,7 @@
 set -o errexit    # always exit on error
 
 (
+    cd $BUILD_DIR
     cat $BUILD_DIR/.heroku-private-build.lst|while read repo_url ; do
         buildpack_code=$(echo ${repo_url}|md5sum|tr -d ' -')
         buildpack_name=__buildpack_${buildpack_code}
