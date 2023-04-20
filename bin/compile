@@ -32,11 +32,15 @@ sh scripts/add-sshkey.sh $ENV_DIR
         if [ -f ${buildpack_path}/bin/compile ]; then
             echo "Calling 'compile' for buildpack: $repo_url"
             ${buildpack_path}/bin/compile  "$BUILD_DIR" "$CACHE_DIR" "$ENV_DIR"
-            exit $?
+            res=$?
+
+            if [ $res -ne 0 ] ; then
+                exit $res
+            fi
         else
             echo "No compile file in app"
             exit 1
         fi
     done
-)
+) || exit 1
 
