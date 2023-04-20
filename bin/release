@@ -21,7 +21,7 @@ BUILD_DIR=${1:-}
         ${buildpack_path}/bin/release ${BUILD_DIR} &>/dev/null   
     done
 
-    if [ -f .heroku-private-metadata.yml ] ; then
-        cat .heroku-private-metadata.yml
+    if [ -f ${BUILD_DIR}/.heroku-private-metadata.yml ] ; then
+        cat ${BUILD_DIR}/.heroku-private-metadata.yml
     fi
 ) || exit 1
