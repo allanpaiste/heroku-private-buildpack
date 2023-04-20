@@ -25,7 +25,7 @@ sh scripts/add-sshkey.sh $ENV_DIR
     cat $BUILD_DIR/.heroku-private-build.lst|while read repo_url ; do
         buildpack_code=$(echo ${repo_url}|md5sum|tr -d ' -')
         buildpack_name=__buildpack_${buildpack_code}
-        buildpack_path=${BUILD_DIR}/$buildpack_name
+        buildpack_path=${BUILD_DIR}/${buildpack_name}
 
         echo "Pulling code for: $repo_url"
         git clone $repo_url ${buildpack_name}
