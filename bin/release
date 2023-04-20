@@ -1,24 +1,24 @@
-#!/bin/sh
+#!/usr/bin/env bash
 # bin/release <build-dir>
-set -o errexit    # always exit on error
+# set -o errexit    # always exit on error
 
-(
-    cd $BUILD_DIR
-    cat $BUILD_DIR/.heroku-private-build.lst|while read repo_url ; do
-        buildpack_code=$(echo ${repo_url}|md5sum|tr -d ' -')
-        buildpack_name=__buildpack_${buildpack_code}
-        buildpack_path=${BUILD_DIR}/$buildpack_name
+# (
+#     cd $BUILD_DIR
+#     cat $BUILD_DIR/.heroku-private-build.lst|while read repo_url ; do
+#         buildpack_code=$(echo ${repo_url}|md5sum|tr -d ' -')
+#         buildpack_name=__buildpack_${buildpack_code}
+#         buildpack_path=${BUILD_DIR}/$buildpack_name
 
-        if [ ! -f ${buildpack_path}/bin/release ]; then
-            continue
-        fi
+#         if [ ! -f ${buildpack_path}/bin/release ]; then
+#             continue
+#         fi
        
-        ${buildpack_path}/bin/release $BUILD_DIR &>/dev/null   
-    done
-) || exit 1
+#         ${buildpack_path}/bin/release $BUILD_DIR &>/dev/null   
+#     done
+# ) || exit 1
 
-cat << EOF
----
-addons: []
-default_process_types: []
-EOF
+# cat << EOF
+# ---
+# addons: []
+# default_process_types: []
+# EOF
