@@ -26,11 +26,11 @@ sh scripts/add-sshkey.sh $ENV_DIR
         buildpack_name=__buildpack_${buildpack_code}
         buildpack_path=${BUILD_DIR}/$buildpack_name
 
-        echo Pulling $repo_url
+        echo "Pulling code for: $repo_url"
         git clone $repo_url ${buildpack_name}
 
         if [ -f ${buildpack_path}/bin/compile ]; then
-            echo "Calling buildpack compile script"
+            echo "Calling 'compile' for buildpack: $repo_url"
             ${buildpack_path}/bin/compile  "$BUILD_DIR" "$CACHE_DIR" "$ENV_DIR"
             exit $?
         else

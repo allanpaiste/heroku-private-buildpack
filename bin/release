@@ -2,5 +2,18 @@
 # call the apps release script
 set -o errexit    # always exit on error
 
-$1/app/bin/release
+    cat $BUILD_DIR/.heroku-private-build.lst|while read repo_url ; do
+        buildpack_code=$(echo ${repo_url}|md5sum|tr -d ' -')
+        buildpack_name=__buildpack_${buildpack_code}
+        buildpack_path=${BUILD_DIR}/$buildpack_name
+
+        if [ -f ${buildpack_path}/bin/release ]; then
+            echo "Calling 'release' for buildpack: $repo_url"
+            ${buildpack_path}/bin/release
+            exit $?
+        else
+            echo "No compile file in app"
+            exit 1
+        fi
+    done
 exit $?
