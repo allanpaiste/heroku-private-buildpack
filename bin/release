@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 # bin/release <build-dir>
-set -o errexit    # always exit on error
-
 (
     cd $BUILD_DIR &>/dev/null
     cat $BUILD_DIR/.heroku-private-build.lst|while read repo_url ; do
@@ -13,9 +11,9 @@ set -o errexit    # always exit on error
             continue
         fi
        
-        ${buildpack_path}/bin/release $BUILD_DIR &>/dev/null   
+        # ${buildpack_path}/bin/release $BUILD_DIR &>/dev/null   
     done
-) || exit 1
+)
 
 cat << EOF
 ---
