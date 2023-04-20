@@ -11,7 +11,7 @@ set -o errexit    # always exit on error
 
         if [ -f ${buildpack_path}/bin/release ]; then
             echo "Calling 'release' for buildpack: $repo_url"
-            ${buildpack_path}/bin/release $BUILD_DIR
+            ${buildpack_path}/bin/release $BUILD_DIR &>/dev/null
             res=$?
 
             if [ $res -ne 0 ] ; then
