@@ -1,5 +1,5 @@
 #!/bin/sh
-# call the apps release script
+# bin/release <build-dir>
 set -o errexit    # always exit on error
 
 (
@@ -11,7 +11,7 @@ set -o errexit    # always exit on error
 
         if [ -f ${buildpack_path}/bin/release ]; then
             echo "Calling 'release' for buildpack: $repo_url"
-            ${buildpack_path}/bin/release
+            ${buildpack_path}/bin/release $BUILD_DIR
             res=$?
 
             if [ $res -ne 0 ] ; then
@@ -23,3 +23,7 @@ set -o errexit    # always exit on error
         fi
     done
 ) || exit 1
+
+cat << EOF
+addons: []
+EOF
