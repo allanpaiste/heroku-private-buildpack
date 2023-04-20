@@ -26,3 +26,11 @@ It hooks in only to the release and compile api.
    ```shell
    heroku config:set BUILDPACK_SSH_KEY=$(cat path/to/your/keys/id_rsa | base64)
    ```
+
+## Buildpack Metadata
+
+Note that this solution has currently a downside of not performing proper metadata consolidation
+from the private buildpacks and returns empty metadata response instead. 
+
+There is thought a possibility of composing their own merged meta-data via `.heroku-private-metadata.yml` 
+which would be sent (when present) as output of `bin/release`.

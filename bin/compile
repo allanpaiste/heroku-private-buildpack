@@ -11,25 +11,26 @@ ENV_DIR=${3:-}
 echo build user is `whoami`
 ls -lrta ~
 
-sh scripts/add-sshkey.sh $ENV_DIR
+sh scripts/add-sshkey.sh ${ENV_DIR}
 
 (
-    cd $BUILD_DIR
-    cat $BUILD_DIR/.heroku-private-build.lst|while read repo_url ; do
+    cd ${BUILD_DIR} &>/dev/null
+    
+    cat ${BUILD_DIR}/.heroku-private-build.lst|while read repo_url ; do
         buildpack_code=$(echo ${repo_url}|md5sum|tr -d ' -')
         buildpack_name="__buildpack_${buildpack_code}"
         buildpack_path="${BUILD_DIR}/${buildpack_name}"
 
         echo "Pulling code for: $repo_url"
-        git clone $repo_url ${buildpack_name}
+        git clone ${repo_url} ${buildpack_name}
 
         if [ -f ${buildpack_path}/bin/compile ]; then
-            echo "Calling 'compile' for buildpack: $repo_url"
-            ${buildpack_path}/bin/compile  "$BUILD_DIR" "$CACHE_DIR" "$ENV_DIR"
+            echo "Calling 'compile' for buildpack: ${repo_url}"
+            ${buildpack_path}/bin/compile  "${BUILD_DIR}" "${CACHE_DIR}" "${ENV_DIR}"
             res=$?
 
-            if [ $res -ne 0 ] ; then
-                exit $res
+            if [ ${res} -ne 0 ] ; then
+                exit ${res}
             fi
         else
             echo "No compile file in app"
