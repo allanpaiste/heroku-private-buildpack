@@ -11,6 +11,6 @@
             continue
         fi
        
-        ${buildpack_path}/bin/release $BUILD_DIR &>/dev/null   
+        ${buildpack_path}/bin/release $BUILD_DIR &>/dev/null
     done
 )
