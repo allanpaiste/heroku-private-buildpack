@@ -14,9 +14,3 @@
         ${buildpack_path}/bin/release $BUILD_DIR &>/dev/null   
     done
 )
-
-cat << EOF
----
-addons: []
-default_process_types: []
-EOF
