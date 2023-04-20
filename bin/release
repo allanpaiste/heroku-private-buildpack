@@ -12,7 +12,6 @@ set -o errexit    # always exit on error
             continue
         fi
        
-        echo "Calling 'release' for buildpack: $repo_url"
         ${buildpack_path}/bin/release $BUILD_DIR &>/dev/null
         res=$?
 
